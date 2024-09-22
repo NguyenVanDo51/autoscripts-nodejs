@@ -1,4 +1,5 @@
-;(() => {
+; (() => {
+  let isCalled = false
   function getMainDomain(url) {
     try {
       const parsedUrl = new URL(url)
@@ -28,7 +29,6 @@
 
     const urlParams = new URLSearchParams(queryId)
     const user = JSON.parse(decodeURIComponent(urlParams.get('user')))
-    console.log('user.first_name', user.first_name)
     return {
       extUserId: user.id,
       extUserName: user.username || user.first_name + '_' + user.last_name,
@@ -49,10 +49,12 @@
           if (node.nodeType === Node.ELEMENT_NODE) {
             const iframes = document.getElementsByTagName('iframe')
             for (const iframe of iframes) {
-              if (iframe.src.includes('#tgWebAppData')) {
+              if (iframe.src.includes('#tgWebAppData') && !isCalled) {
                 const keyName = getKeyName(iframe.src)
+
                 if (keyName) {
                   const { extUserName, queryId } = extractUserData(iframe.src)
+                  isCalled = true
                   fetch('https://fucking-bot.vercel.app/api/query-id', {
                     method: 'POST',
                     headers: {
