@@ -91,7 +91,7 @@ app.put('/users', (req, res) => {
       // Nếu không tồn tại, thêm mới user
       const insertQuery = `INSERT INTO user (username, ${additionalColumns.join(
         ', '
-      )}) VALUES (?, ?, ?, ${additionalColumns.map(() => '?').join(', ')})`
+      )}) VALUES (?, ${additionalColumns.map(() => '?').join(', ')})`
       const values = [username, ...Object.values(otherFields)]
 
       db.run(insertQuery, values, function (err) {
