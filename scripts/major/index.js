@@ -406,7 +406,7 @@ class GLaDOS {
         async (r) => await r.json()
       )
       const users = usersData
-        .filter((u) => u.major || u.glados)
+        .filter((u) => !!u.major || !!u.glados)
         .map((u) => ({
           ...u,
           major: u.major || u.glados,

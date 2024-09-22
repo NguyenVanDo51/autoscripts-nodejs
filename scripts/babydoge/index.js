@@ -418,7 +418,7 @@ class Babydoge {
         const firstName = userData.first_name
         const ip = await this.checkProxyIP(proxy)
         console.log(
-          `========== Tài khoản ${index + 1}/${users.length} | ${
+          `========== [BabyDoge] Tài khoản ${index + 1}/${users.length} | ${
             firstName?.green
           } | IP: ${ip} ==========`
         )

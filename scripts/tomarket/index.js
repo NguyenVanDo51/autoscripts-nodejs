@@ -322,6 +322,8 @@ class Tomarket {
   }
 
   async submitWalletAddress(accountIndex, proxy) {
+    if (this.wallets?.length <= 0) return
+
     const url = 'https://api-web.tomarket.ai/tomarket-game/v1/tasks/address'
     const walletAddress = this.wallets[accountIndex]
     if (!walletAddress) {
@@ -685,7 +687,7 @@ class Tomarket {
     const username = user.first_name
 
     let proxyIP = await this.getProxyIP(proxy)
-    console.log(`========== Tài khoản ${index + 1} | ${username.green} | IP: ${proxyIP} ==========`)
+    console.log(`========== [Tomarket] Tài khoản ${index + 1} | ${username.green} | IP: ${proxyIP} ==========`)
 
     const token = await this.getOrRefreshToken(id, data, proxy)
     if (!token) return null

@@ -1,10 +1,15 @@
 {
   "name": "autoscripts",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start-blum": "node blum-proxy.js",
+    "start-blum": "node scripts/blum/index.js",
+    "start-major": "node scripts/major/index.js",
+    "start-matchquest": "node scripts/matchquest/index.js",
+    "start-moonbix": "node scripts/moonbix/index.js",
+    "start-tomarket": "node scripts/tomarket/index.js",
+    "start-babydoge": "node scripts/babydoge/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

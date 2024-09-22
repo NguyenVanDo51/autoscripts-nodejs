@@ -40,7 +40,7 @@ class Binance {
 
   async log(msg, type = 'info') {
     const timestamp = new Date().toLocaleTimeString()
-    const accountPrefix = `[Tài khoản ${this.accountIndex + 1}]`
+    const accountPrefix = `[Moonbix] [Tài khoản ${this.accountIndex + 1}]`
     const ipPrefix = this.proxyIP ? `[${this.proxyIP}]` : '[Unknown IP]'
     let logMessage = ''
 

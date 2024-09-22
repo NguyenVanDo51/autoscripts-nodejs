@@ -38,7 +38,7 @@ class GameBot {
 
   async log(msg, type = 'info') {
     const timestamp = new Date().toLocaleTimeString()
-    const accountPrefix = `[Tài khoản ${this.accountIndex + 1} - ${this.username}]`
+    const accountPrefix = `[Blum] [Tài khoản ${this.accountIndex + 1} - ${this.username}]`
     const ipPrefix = this.proxyIP ? `[${this.proxyIP}]` : '[Unknown IP]'
     let logMessage = ''
 
