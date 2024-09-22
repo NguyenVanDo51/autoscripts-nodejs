@@ -36,7 +36,7 @@
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
-      max-width: 120px;
+      max-width: 400px;
       overflow: hidden;
     }
 
@@ -94,6 +94,7 @@
             <%= key %>
           </th>
           <% })%>
+            <th>Peoxy</th>
             <th>Actions</th>
       </tr>
     </thead>
@@ -104,7 +105,18 @@
             <th>
               <%= key %>
             </th>
+
             <% })%>
+
+              <td>
+                <select class="proxy-select" data-username="<%= user.username %>">
+                  <option value="">-- Choose Proxy --</option>
+                  <% proxyList.forEach(function(proxy) { %>
+                    <option value="<%= proxy %>" <%=user.proxy===proxy ? 'selected' : '' %>><%= proxy %>
+                    </option>
+                    <% }); %>
+                </select>
+              </td>
               <td>
                 <a href="/ui/users/edit/<%= user.username %>">Edit</a>
                 <form action="/users/<%= user.username %>" method="POST" style="display:inline;">
@@ -113,8 +125,40 @@
               </td>
         </tr>
         <% }) %>
+
+
     </tbody>
   </table>
+
+  <script>
+    // Lắng nghe sự kiện thay đổi proxy
+    document.querySelectorAll('.proxy-select').forEach(select => {
+      select.addEventListener('change', function () {
+        const selectedProxy = this.value;
+        const username = this.getAttribute('data-username');
+
+        if (selectedProxy) {
+          // Gọi API để cập nhật proxy
+          fetch(`/users/`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, proxy: selectedProxy }), // Gửi proxy mới
+          })
+            .then(response => response.json())
+            .then(result => {
+              console.log(`Proxy updated for ${username}`);
+              window.location.reload();
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Error updating proxy');
+            });
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

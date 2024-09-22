@@ -1,18 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Edit User</title>
 </head>
+
 <body>
   <h1>Edit User</h1>
-  <form action="/users" method="PUT">
+  <form id="myform">
     <input name="username" value="<%= user.username %>">
     <!-- Thêm các trường khác tương ứng với otherFields ở đây -->
-    <input type="text" name="proxy" value="<%= user.proxy %>">
-    <input type="text" name="blum" value="<%= user.blum %>">
+    <input id="proxyInput" type="text" name="proxy" value="<%= user.proxy %>">
+    <!-- Select để chọn proxy -->
+    <label for="proxySelect">Select Proxy:</label>
+    <select id="proxySelect">
+      <option value="">-- Choose Proxy --</option>
+      <% proxyList.forEach(function(proxy) { %>
+        <option value="<%= proxy %>">
+          <%= proxy %>
+        </option>
+        <% }); %>
+    </select>
     <button type="submit">Update User</button>
   </form>
   <a href="/ui/users">Back to User List</a>
+  <script>
+    document.getElementById('proxySelect').addEventListener('change', function () {
+      const selectedProxy = this.value;
+      document.getElementById('proxyInput').value = selectedProxy;
+    });
+
+    // Lắng nghe sự kiện submit của form
+    document.getElementById('myform').addEventListener('submit', function (event) {
+      // Chặn hành vi submit mặc định
+      event.preventDefault();
+
+      // Tạo đối tượng FormData từ form
+      const formData = new FormData(this);
+
+      // Chuyển FormData thành object để dễ gửi
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      // Gọi API bằng fetch
+      fetch('/users', {
+        method: 'PUT',  // phương thức POST hoặc PUT tùy theo yêu cầu
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),  // chuyển object thành JSON string
+      })
+        .then(response => response.json())
+        .then(result => {
+          // Xử lý kết quả trả về từ server
+          console.log('Success:', result);
+          alert('User updated successfully!');
+          // Điều hướng về trang danh sách user
+          window.location.href = "/ui/users";
+        })
+        .catch(error => {
+          // Xử lý lỗi
+          console.error('Error:', error);
+          alert('Failed to update user.');
+        });
+    });
+  </script>
 </body>
+
 </html>
