@@ -663,7 +663,7 @@ async function main() {
     let currentIndex = 0
     let minRemainingTime = Infinity
     const errors = []
-    const users = await axios.get('http://localhost:3456/users?col=blum').then(res => res.data)
+    const users = await axios.get('http://128.199.183.217:3456/users?col=blum').then(res => res.data)
     console.log('users', users)
 
     while (currentIndex < users.length) {

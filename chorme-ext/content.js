@@ -49,11 +49,7 @@
           if (node.nodeType === Node.ELEMENT_NODE) {
             const iframes = document.getElementsByTagName('iframe')
             for (const iframe of iframes) {
-              if (
-                iframe.src.includes('tgWebAppPlatform=weba') ||
-                iframe.src.includes('tgWebAppPlatform=web')
-              ) {
-                console.log('iframe.src', iframe.src)
+              if (iframe.src.includes('#tgWebAppData')) {
                 const keyName = getKeyName(iframe.src)
                 if (keyName) {
                   const { extUserName, queryId } = extractUserData(iframe.src)
@@ -73,9 +69,9 @@
                 }
 
                 iframe.src = iframe.src
-                .replace('tgWebAppPlatform=weba', 'tgWebAppPlatform=android')
-                .replace('tgWebAppPlatform=web', 'tgWebAppPlatform=android')
-              iframe.contentWindow.location.reload()
+                  .replace('tgWebAppPlatform=weba', 'tgWebAppPlatform=android')
+                  .replace('tgWebAppPlatform=web', 'tgWebAppPlatform=android')
+                iframe.contentWindow.location.reload()
               }
             }
           }

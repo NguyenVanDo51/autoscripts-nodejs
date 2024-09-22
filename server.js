@@ -5,6 +5,13 @@ const db = require('./db')
 const app = express()
 app.use(bodyParser.json())
 
+// Cấu hình view engine
+app.set('view engine', 'ejs');
+
+// Cấu hình thư mục chứa các template
+app.set('views', __dirname + '/views'); // Thay đổi nếu thư mục views của bạn khác
+
+
 function convertProxyFormat(proxy) {
   try {
     // Tách chuỗi proxy thành các phần
@@ -133,6 +140,32 @@ app.delete('/users/:username', (req, res) => {
     res.json({ message: 'User deleted successfully' })
   })
 })
+
+// Hàm trả về danh sách user
+app.get('/ui/users', (req, res) => {
+  const selectQuery = `SELECT * FROM user`;
+  db.all(selectQuery, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.render('users', { users: rows }); // Giả sử bạn sử dụng EJS hoặc một template engine khác
+  });
+});
+// Hàm trả về form sửa user
+app.get('/ui/users/edit/:username', (req, res) => {
+  const { username } = req.params;
+  const selectQuery = `SELECT * FROM user WHERE username = ?`;
+  
+  db.get(selectQuery, [username], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (!row) {
+      return res.status(404).send('User not found');
+    }
+    res.render('editUser', { user: row }); // Giả sử bạn có một template cho việc sửa user
+  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3456
