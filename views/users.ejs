@@ -36,7 +36,7 @@
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
-      max-width: 400px;
+      max-width: 70px;
       overflow: hidden;
     }
 
@@ -90,12 +90,12 @@
     <thead>
       <tr>
         <th>Index</th>
+        <th>Proxy</th>
         <% Object.keys(users[0]).map((key)=> { %>
           <th>
             <%= key %>
           </th>
           <% })%>
-            <th>Proxy</th>
             <th>Actions</th>
       </tr>
     </thead>
@@ -103,21 +103,22 @@
       <% users.forEach((user, index)=> { %>
         <tr>
           <td><%= index + 1 %></td>
+          <td>
+            <select class="proxy-select" data-username="<%= user.username %>">
+              <option value="">-- Choose Proxy --</option>
+              <% proxyList.forEach(function(proxy, index) { %>
+                <option value="<%= proxy %>" <%=user.proxy===proxy ? 'selected' : '' %>><%= index+1 %>. <%= proxy %>
+                </option>
+                <% }); %>
+            </select>
+          </td>
           <% Object.values(user).map((key)=> { %>
             <th>
               <%= key %>
             </th>
             <% })%>
 
-              <td>
-                <select class="proxy-select" data-username="<%= user.username %>">
-                  <option value="">-- Choose Proxy --</option>
-                  <% proxyList.forEach(function(proxy) { %>
-                    <option value="<%= proxy %>" <%=user.proxy===proxy ? 'selected' : '' %>><%= proxy %>
-                    </option>
-                    <% }); %>
-                </select>
-              </td>
+              
               <td>
                 <form action="/users/<%= user.username %>" method="POST" style="display:inline;">
                   <button type="submit">Delete</button>
