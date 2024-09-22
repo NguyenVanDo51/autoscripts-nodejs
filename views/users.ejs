@@ -89,23 +89,24 @@
   <table>
     <thead>
       <tr>
+        <th>Index</th>
         <% Object.keys(users[0]).map((key)=> { %>
           <th>
             <%= key %>
           </th>
           <% })%>
-            <th>Peoxy</th>
+            <th>Proxy</th>
             <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% users.forEach(user=> { %>
+      <% users.forEach((user, index)=> { %>
         <tr>
+          <td><%= index %></td>
           <% Object.values(user).map((key)=> { %>
             <th>
               <%= key %>
             </th>
-
             <% })%>
 
               <td>
