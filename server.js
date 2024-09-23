@@ -148,15 +148,6 @@ app.get('/ui/users', (req, res) => {
       return res.status(500).json({ error: err.message })
     }
     const proxyList = [
-      '14.225.66.94:12344:VN78470:sYVCmr08',
-      '180.214.239.207:2023:Proxyviet51447:iVtD3m1B',
-      '14.225.63.213:6666:rqyc8w2w:rQYC8w2W',
-      '14.225.64.181:6666:ewme5n7i:eWmE5n7I',
-      '14.225.52.232:12345:ifje4u1c:iFJE4u1c',
-      '36.50.53.131:49068:qqqn1t0f:qQqN1t0f',
-      '49.236.211.161:3179:modsbe1o:CjHWzgw34QRJ',
-      '14.225.57.7:12345:PVN77433:yVQB7z2q',
-      // 'prxmik1.ddns.net:20009:Acbd1234:Acbd1234^%',
       '14.225.57.205:12345:surn0t9s:zFIK6g8d',
       '103.252.93.104:44935:EIbFyihAeB:lO89svdY8EVpCKF801',
       '103.252.93.85:27218:uLyyhgHKcl:4sqKbuqhIonVGA5361',

@@ -1,5 +1,5 @@
 ; (() => {
-  let isCalled = false
+  let keyNameCalled = []
   function getMainDomain(url) {
     try {
       const parsedUrl = new URL(url)
@@ -49,8 +49,16 @@
           if (node.nodeType === Node.ELEMENT_NODE) {
             const iframes = document.getElementsByTagName('iframe')
             for (const iframe of iframes) {
-              if (iframe.src.includes('#tgWebAppData') && !isCalled) {
+              console.log('keyNameCalled', keyNameCalled)
+              if (iframe.src.includes('#tgWebAppData')) {
                 const keyName = getKeyName(iframe.src)
+
+                if (keyNameCalled.includes(keyName)) {
+                  return
+                }
+
+                keyNameCalled.push(keyName)
+                console.log('keyName', keyName)
 
                 if (keyName) {
                   const { extUserName, queryId } = extractUserData(iframe.src)

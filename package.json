@@ -10,6 +10,7 @@
     "start-moonbix": "node scripts/moonbix/index.js",
     "start-tomarket": "node scripts/tomarket/index.js",
     "start-babydoge": "node scripts/babydoge/index.js",
+    "start-yescoin": "node scripts/yescoin/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
