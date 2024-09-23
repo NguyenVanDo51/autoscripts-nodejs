@@ -137,8 +137,9 @@ def get_profile(proxy, username):
             print(f"{Fore.BLUE+Style.BRIGHT}[ {upgrade_type.capitalize()} Level ]: {level + 1}")
     else:
         print("Không lấy được dữ liệu, mã trạng thái:", response.status_code)
+        print("Reset queryId Username: ", username)
         if response.status_code == 401:
-            requests.post(url_user, json={
+            requests.put(url_user, json={
                 "username": username,
                 "seeddao": ""
             })
@@ -238,6 +239,9 @@ def main():
             info = get_profile(proxy, username)
             if info:
                 print(f"Đang xử lý tài khoản {info['data']['name']}")
+            else:
+                print("Lấy thông tin profile thất bại, bỏ qua")
+                continue
 
             if confirm_storage.lower() == 'y':
                 hasil_upgrade = upgrade_storage(confirm_storage, proxy)

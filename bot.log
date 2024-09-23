@@ -1,0 +1,27 @@
+2024-09-23 16:09:48,514 - DEBUG - Using proactor: IocpProactor
+2024-09-23 16:09:48,526 - DEBUG - Read 1 accounts from C:\Users\Windows\Desktop\projects\autoscripts\scripts\moonbix\data.txt
+2024-09-23 16:09:48,526 - DEBUG - Read 1 proxies from C:\Users\Windows\Desktop\projects\autoscripts\scripts\moonbix\proxy.txt
+2024-09-23 16:09:48,527 - DEBUG - Configuration: {'auto_task': True, 'auto_game': True, 'min_points': 250, 'max_points': 300, 'interval_minutes': 10}
+2024-09-23 16:09:48,527 - DEBUG - Initialized Binance client for account index 0
+2024-09-23 16:09:48,527 - DEBUG - Using proxy None
+2024-09-23 16:09:48,529 - DEBUG - Starting new HTTPS connection (1): www.binance.com:443
+2024-09-23 16:09:48,825 - DEBUG - https://www.binance.com:443 "POST /bapi/growth/v1/friendly/growth-paas/third-party/access/accessToken HTTP/11" 200 None
+2024-09-23 16:09:48,975 - DEBUG - https://www.binance.com:443 "POST /bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/user/user-info HTTP/11" 200 None
+2024-09-23 16:09:48,975 - DEBUG - [Account 1][Direct] Tickets available: 4
+2024-09-23 16:09:48,975 - DEBUG - Using proxy None
+2024-09-23 16:09:48,976 - DEBUG - Starting new HTTPS connection (1): www.binance.com:443
+2024-09-23 16:09:49,233 - DEBUG - https://www.binance.com:443 "POST /bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/task/list HTTP/11" 200 745
+2024-09-23 16:09:49,234 - DEBUG - [Account 1][Direct] Starting game with 4 tickets available
+2024-09-23 16:09:49,234 - DEBUG - Using proxy None
+2024-09-23 16:09:49,234 - DEBUG - Starting new HTTPS connection (1): www.binance.com:443
+2024-09-23 16:09:49,636 - DEBUG - https://www.binance.com:443 "POST /bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/game/start HTTP/11" 200 None
+2024-09-23 16:09:49,636 - DEBUG - [Account 1][Direct] Started Game
+2024-09-23 16:09:49,636 - DEBUG - [Account 1][Direct] Identified 0 traps to avoid.
+2024-09-23 16:09:49,636 - DEBUG - [Account 1][Direct] Playing game with 262 points!
+2024-09-23 16:09:49,639 - DEBUG - Using proxy None
+2024-09-23 16:09:49,639 - DEBUG - Starting new HTTPS connection (1): www.binance.com:443
+2024-09-23 16:09:49,900 - DEBUG - https://www.binance.com:443 "POST /bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/game/complete HTTP/11" 200 None
+2024-09-23 16:09:49,903 - DEBUG - [Account 1][Direct] Cannot complete game: User: 7721229076, complete game failed, input: MiniAppActivityInput(userId=7721229076, nickName=Andy 914436435, socialType=telegram, resourceId=2056, log=262, payload=OHDqaEBgzXD8QPtweyLmsZHb9i2FK4F50ZWb+BdH266aEKgI4anH2CidKy35TciQWzPQun8OpFUoCKzkGzO2VrNFuDEdav1WVeFZOpdWkfWF4wkfu48IbixlvOpZOFnLq/lurBpennyZszglB7GAwoSEPNSntutXdz2y3XxtF9zlDiuBgGPgwxAWKLO5L9leYx/51AEBsjhWot5StDTnNqqHLzuhXk+2IiEwKeWl418UHWanWkzBrimHXqncf0UatMgcfkNeV6KMwe3U83JSqhy7tAvhgVoULUQ0Fohz4hTgcAXCZZy3YZw6kxMmyETErI7rI931J2hdoHcpACO2vgm93Pnf/GXmSkA1wHChgF25rit49/FVtPY5k6yVSOA38n2C12YzgnE/ac3NWBULURpTKfqiMSE13Xp/y6eVEEMVVSI/C8hCrPrFp8JbxkR/52+msz2lRwFJgHEfzLHFWQ6gf+760z7N6UgvsT4azIcgXhE1UwhrgI9Sy85gHxxEHIVpn6qJ/3Hye9yvWvJUcDgbR7SdSBJaT4XmB+hfxM76sk4bxplxdi4BKE4pQlnNwj7zavQPSKl2qnzv, userIp=null).
+2024-09-23 16:09:49,903 - DEBUG - [Account 1][Direct] Cannot receive game data
+2024-09-23 16:09:52,909 - DEBUG - All accounts processed. Waiting for 10 minutes before restarting...
+2024-09-23 16:09:54,000 - INFO - Process interrupted by user. Exiting...
