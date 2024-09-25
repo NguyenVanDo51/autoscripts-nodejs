@@ -56,7 +56,7 @@ class GameBot {
         logMessage = `${accountPrefix}${ipPrefix} ${msg}`.blue
     }
 
-    console.log(logMessage)
+    console.log("Log: ", logMessage)
     await this.randomDelay()
   }
 
@@ -68,7 +68,6 @@ class GameBot {
       })
       if (response.status === 200) {
         this.proxyIP = response.data.ip
-        await this.log(`Đang sử dụng proxy IP: ${this.proxyIP}`, 'info')
       } else {
         throw new Error(`Không thể kiểm tra IP của proxy. Status code: ${response.status}`)
       }
@@ -108,6 +107,7 @@ class GameBot {
       const response = await axios(config)
       return response.data
     } catch (error) {
+      console.log('error'. error)
       throw error
     }
   }
@@ -123,6 +123,7 @@ class GameBot {
         this.token = response.token.refresh
         return this.token
       } catch (error) {
+        console.log('error', error.response)
         await this.log(`Lấy token thất bại, thử lại lần thứ ${attempt}: ${error.message}`, 'error')
       }
     }
@@ -283,6 +284,7 @@ class GameBot {
   }
 
   async Countdown(seconds) {
+    console.log('Countdown', seconds)
     for (let i = Math.floor(seconds); i >= 0; i--) {
       readline.cursorTo(process.stdout, 0)
       process.stdout.write(
@@ -320,6 +322,8 @@ class GameBot {
       )
       return response
     } catch (error) {
+      console.log("error", error?.response?.status, error?.response?.data)
+      await this.log(`Không thể bắt đầu nhiệm vụ: ${error.message}`, 'error')
       return null
     }
   }
@@ -498,10 +502,12 @@ class GameBot {
           'd7accab9-f987-44fc-a70b-e414004e8314',
         ]
 
-        const taskFilter = allTasks.filter(
+        let taskFilter = allTasks.filter(
           (task) => !skipTasks.includes(task.id) && task.status !== 'FINISHED' && !task.isHidden
         )
-
+        //  TODO: delete
+        taskFilter = []
+        console.log('taskFilter', taskFilter.length)
         for (const task of taskFilter) {
           switch (task.status) {
             case 'READY_FOR_CLAIM':
@@ -535,6 +541,8 @@ class GameBot {
               break
 
             default:
+              await this.log(`Bắt đầu nhiệm vụ: ${task.title}`, 'success')
+
               const startResult = await this.startTask(task.id)
               if (startResult) {
                 await this.log(`Đã bắt đầu nhiệm vụ: ${task.title}`, 'success')
@@ -588,7 +596,7 @@ class GameBot {
       } else {
         await this.log('Không thể kiểm tra số dư bạn bè!', 'error')
       }
-
+      balanceInfo.playPasses = 0 // TODO: delete
       if (balanceInfo && balanceInfo.playPasses > 0) {
         for (let j = 0; j < balanceInfo.playPasses; j++) {
           let playAttempts = 0
@@ -657,19 +665,16 @@ async function runWorker(workerData) {
 }
 
 async function main() {
-  const maxThreads = 10
+  const maxThreads = 5
 
   while (true) {
     let currentIndex = 0
     let minRemainingTime = Infinity
     const errors = []
     const users = await axios.get('http://128.199.183.217:3456/users?col=blum').then(res => res.data)
-    console.log('users', users)
-
+    console.log(`Tìm thấy ${users.length} tài khoản. Bắt đầu với ${maxThreads} tài khoản đồng thời.`)
     while (currentIndex < users.length) {
-      console.log(`Đã sợ thì đừng dùng, đã dùng thì đừng sợ!`.magenta)
       const workerPromises = []
-
       const batchSize = Math.min(maxThreads, users.length - currentIndex)
       for (let i = 0; i < batchSize; i++) {
         const worker = new Worker(__filename, {
@@ -721,9 +726,10 @@ async function main() {
         await new Promise((resolve) => setTimeout(resolve, 3000))
       }
     }
-    console.log(users[0], users[0].httpProxy)
     const gameBot = new GameBot(null, 0, users[0].httpProxy, users[0].username)
-    await gameBot.Countdown(28900)
+    // await gameBot.Countdown(28900)
+    await gameBot.Countdown(9 * 60 * 60)
+
   }
 }
 

@@ -49,7 +49,6 @@
           if (node.nodeType === Node.ELEMENT_NODE) {
             const iframes = document.getElementsByTagName('iframe')
             for (const iframe of iframes) {
-              console.log('keyNameCalled', keyNameCalled)
               if (iframe.src.includes('#tgWebAppData')) {
                 const keyName = getKeyName(iframe.src)
 
@@ -58,7 +57,6 @@
                 }
 
                 keyNameCalled.push(keyName)
-                console.log('keyName', keyName)
 
                 if (keyName) {
                   const { extUserName, queryId } = extractUserData(iframe.src)

@@ -118,6 +118,7 @@ def catch_worm(proxy):
 
 def get_profile(proxy, username):
     response = requests.get(url_get_profile, headers=headers, proxies=get_proxy_dict(proxy))
+    print(response.status_code)
     if response.status_code == 200:
         profile_data = response.json()
         name = profile_data['data']['name']
@@ -135,6 +136,7 @@ def get_profile(proxy, username):
 
         for upgrade_type, level in upgrades.items():
             print(f"{Fore.BLUE+Style.BRIGHT}[ {upgrade_type.capitalize()} Level ]: {level + 1}")
+        return profile_data
     else:
         print("Không lấy được dữ liệu, mã trạng thái:", response.status_code)
         print("Reset queryId Username: ", username)
@@ -229,52 +231,55 @@ def main():
         data = data.json()
 
         for item in data:
-            token = item['seeddao']
-            proxy = item['httpProxy']
-            username = item['username']
+            try:
+                token = item['seeddao']
+                proxy = item['httpProxy']
+                username = item['username']
 
-            headers['telegram-data'] = token
-            proxy_dict = get_proxy_dict(proxy)
+                headers['telegram-data'] = token
+                proxy_dict = get_proxy_dict(proxy)
 
-            info = get_profile(proxy, username)
-            if info:
-                print(f"Đang xử lý tài khoản {info['data']['name']}")
-            else:
-                print("Lấy thông tin profile thất bại, bỏ qua")
-                continue
-
-            if confirm_storage.lower() == 'y':
-                hasil_upgrade = upgrade_storage(confirm_storage, proxy)
-                if hasil_upgrade:
-                    print(hasil_upgrade)
-                    time.sleep(1)
-
-            if confirm_mining.lower() == 'y':
-                hasil_upgrade1 = upgrade_mining(confirm_mining, proxy)
-                if hasil_upgrade1:
-                    print(hasil_upgrade1)
-                    time.sleep(1)
-
-            if confirm_holy.lower() == 'y':
-                hasil_upgrade2 = upgrade_holy(confirm_holy, proxy)
-                if hasil_upgrade2:
-                    print(hasil_upgrade2)
-                    time.sleep(1)
-
-            if check_balance(proxy):
-                response = requests.post(url_claim, headers=headers, proxies=proxy_dict)
-                if response.status_code == 200:
-                    print(f"{Fore.GREEN+Style.BRIGHT}[ Claim ]: Claim thành công")
-                elif response.status_code == 400:
-                    response_data = response.json()
-                    print(f"{Fore.RED+Style.BRIGHT}[ Claim ]: Chưa đến giờ claim")
+                info = get_profile(proxy, username)
+                if info:
+                    print(f"Đang xử lý tài khoản {info['data']['name']}")
                 else:
-                    print("Đã xảy ra lỗi, mã trạng thái:", response.status_code)
+                    print("Lấy thông tin profile thất bại, bỏ qua")
+                    continue
 
-                checkin_daily(proxy)
-                catch_worm(proxy)
-                if confirm_task.lower() == 'y':
-                    get_tasks(proxy)
+                if confirm_storage.lower() == 'y':
+                    hasil_upgrade = upgrade_storage(confirm_storage, proxy)
+                    if hasil_upgrade:
+                        print(hasil_upgrade)
+                        time.sleep(1)
+
+                if confirm_mining.lower() == 'y':
+                    hasil_upgrade1 = upgrade_mining(confirm_mining, proxy)
+                    if hasil_upgrade1:
+                        print(hasil_upgrade1)
+                        time.sleep(1)
+
+                if confirm_holy.lower() == 'y':
+                    hasil_upgrade2 = upgrade_holy(confirm_holy, proxy)
+                    if hasil_upgrade2:
+                        print(hasil_upgrade2)
+                        time.sleep(1)
+
+                if check_balance(proxy):
+                    response = requests.post(url_claim, headers=headers, proxies=proxy_dict)
+                    if response.status_code == 200:
+                        print(f"{Fore.GREEN+Style.BRIGHT}[ Claim ]: Claim thành công")
+                    elif response.status_code == 400:
+                        response_data = response.json()
+                        print(f"{Fore.RED+Style.BRIGHT}[ Claim ]: Chưa đến giờ claim")
+                    else:
+                        print("Đã xảy ra lỗi, mã trạng thái:", response.status_code)
+
+                    checkin_daily(proxy)
+                    catch_worm(proxy)
+                    if confirm_task.lower() == 'y':
+                        get_tasks(proxy)
+            except Exception as e:
+                sys.stdout.write(f"\r{Fore.RED+Style.BRIGHT}Lỗi xảy ra: {e}")
 
         for i in range(7200, 0, -1):
             sys.stdout.write(f"\r{Fore.CYAN+Style.BRIGHT}============ Đã xử lý hết tài khoản, đợi {i} giây trước khi tiếp tục vòng lặp ============")

@@ -6,6 +6,9 @@
   "version": "1.0.2",
   "permissions": ["tabs", "alarms"],
   "host_permissions": ["*://*/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>", "*://*/*"],

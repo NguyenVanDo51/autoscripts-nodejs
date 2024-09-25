@@ -52,6 +52,13 @@ class Babydoge {
       } catch (error) {
         attempts++
         if (
+          error?.response?.data?.code === 400 &&
+          error?.response?.data?.message === 'auth token expired'
+        ) {
+          this.log('Token hết hạn'.yellow)
+          throw new Error('401 Unauthorized')
+        }
+        if (
           error.response &&
           error.response.data &&
           error.response.data.code === 403 &&
@@ -61,7 +68,6 @@ class Babydoge {
           return { data: error.response.data }
         }
         this.log(`Lỗi kết nối (Lần thử ${attempts}/${maxAttempts}): ${error.message}`.red)
-        console.log(error)
         if (attempts < maxAttempts) {
           await this.sleep(5000)
         } else {
@@ -106,7 +112,7 @@ class Babydoge {
     console.log(`[*] ${msg}`)
   }
 
-  async dangnhap(tgData, proxy) {
+  async dangnhap(tgData, proxy, username) {
     const url = 'https://backend.babydogepawsbot.com/authorize'
     const headers = { ...this.headers }
     try {
@@ -125,6 +131,12 @@ class Babydoge {
       }
     } catch (error) {
       this.log(`Lỗi rồi: ${error.message}`.red)
+      if (error.message === '401 Unauthorized') {
+        axios.put("http://128.199.183.217:3456/users", {
+          username: username,
+          babydogeclikerbot: ''
+        })
+      }
       return null
     }
   }
@@ -401,10 +413,10 @@ class Babydoge {
     //     maxUpgradeCost = Infinity
     //   }
     // }
-    
+
     let maxUpgradeCost = Infinity
     const buyCardsDecision = true
-    const upgradeMyCardsDecision = true 
+    const upgradeMyCardsDecision = true
 
     while (true) {
       const users = await axios
@@ -415,15 +427,15 @@ class Babydoge {
         const tgData = userRowData.babydogeclikerbot
         const proxy = userRowData.httpProxy
         const userData = JSON.parse(decodeURIComponent(tgData.split('&')[1].split('=')[1]))
-        const firstName = userData.first_name
+        const username = userRowData.username
         const ip = await this.checkProxyIP(proxy)
         console.log(
           `========== [BabyDoge] Tài khoản ${index + 1}/${users.length} | ${
-            firstName?.green
+            username?.green
           } | IP: ${ip} ==========`
         )
 
-        const loginData = await this.dangnhap(tgData, proxy)
+        const loginData = await this.dangnhap(tgData, proxy, username)
         if (!loginData) {
           this.log('Đăng nhập thất bại, chuyển sang tài khoản tiếp theo.'.red)
           continue
