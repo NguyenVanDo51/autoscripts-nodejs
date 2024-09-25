@@ -3,3 +3,4 @@ users.db
 script.sh
 data
 app/data
+scripts/tomarket/token.json
