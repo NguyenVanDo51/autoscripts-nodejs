@@ -188,6 +188,9 @@ const proxyList = [
 ]
 
 app.get('/proxies', (req, res) => {
+  const { pass } = req.query
+  if (pass !== 'fuckyou') return []
+
   res.json(proxyList.map((proxy) => convertProxyFormat(proxy)))
 })
 
