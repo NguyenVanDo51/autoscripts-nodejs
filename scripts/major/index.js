@@ -402,7 +402,7 @@ class GLaDOS {
 
   async main() {
     while (true) {
-      const usersData = await fetch('http://128.199.183.217:3456/users').then(
+      const usersData = await fetch('http://152.42.192.244:3456/users').then(
         async (r) => await r.json()
       )
       const users = usersData

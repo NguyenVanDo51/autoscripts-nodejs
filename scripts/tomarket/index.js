@@ -210,7 +210,7 @@ class Tomarket {
   }
 
   async loadData() {
-    const datas = await fetch('http://128.199.183.217:3456/users?col=tomarket').then(
+    const datas = await fetch('http://152.42.192.244:3456/users?col=tomarket').then(
       async (r) => await r.json()
     )
 

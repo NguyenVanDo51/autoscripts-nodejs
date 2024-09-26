@@ -478,7 +478,7 @@ class Matchain {
     while (true) {
       const list_countdown = []
       const start = Math.floor(Date.now() / 1000)
-      const users = await fetch('http://128.199.183.217:3456/users?col=matchain').then(
+      const users = await fetch('http://152.42.192.244:3456/users?col=matchain').then(
         async (r) => await r.json()
       )
       for (let [no, userData] of users.entries()) {
