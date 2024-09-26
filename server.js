@@ -47,7 +47,7 @@ app.get('/users', (req, res) => {
   let query = `SELECT * FROM user`
   const { col, pass } = req.query
 
-  if (pass !== 'fuckyou') return []
+  if (pass !== 'fuckyou') return res.json([])
 
   if (!!col) {
     query += ` WHERE proxy IS NOT NULL AND ${col} IS NOT NULL AND ${col} != ''`
