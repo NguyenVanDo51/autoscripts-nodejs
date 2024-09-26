@@ -50,7 +50,7 @@ app.get('/users', (req, res) => {
   if (pass !== 'fuckyou') return []
 
   if (!!col) {
-    query += ` WHERE proxy IS NOT NULL AND blum IS NOT NULL AND ${col} != ''`
+    query += ` WHERE proxy IS NOT NULL AND ${col} IS NOT NULL AND ${col} != ''`
   }
 
   db.all(query, [], (err, rows) => {
