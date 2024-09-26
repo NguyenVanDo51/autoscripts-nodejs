@@ -45,7 +45,9 @@ app.get('/users/:username', (req, res) => {
 // READ - Lấy danh sách tất cả users
 app.get('/users', (req, res) => {
   let query = `SELECT * FROM user`
-  const { col } = req.query
+  const { col, pass } = req.query
+
+  if (pass !== 'fuckyou') return []
 
   if (!!col) {
     query += ` WHERE proxy IS NOT NULL AND blum IS NOT NULL AND ${col} != ''`
