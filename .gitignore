@@ -1,6 +1,7 @@
 node_modules
 users.db
 script.sh
+/script.sh
 data
 app/data
 scripts/tomarket/token.json
