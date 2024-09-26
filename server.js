@@ -42,6 +42,8 @@ app.get('/users/:username', (req, res) => {
   })
 })
 
+const validCoins = ['glados', 'major', 'tomarket', 'matchain']
+
 // READ - Lấy danh sách tất cả users
 app.get('/users', (req, res) => {
   let query = `SELECT * FROM user`
@@ -49,7 +51,7 @@ app.get('/users', (req, res) => {
 
   if (pass !== 'fuckyou') return res.json([])
 
-  if (!!col) {
+  if (!!col && validCoins.includes(col)) {
     query += ` WHERE proxy IS NOT NULL AND ${col} IS NOT NULL AND ${col} != ''`
   }
 
@@ -66,6 +68,7 @@ app.get('/users', (req, res) => {
   })
 })
 
+
 const updateOrCreateUser = (req, res) => {
   const { username, ...otherFields } = req.body
   console.log('otherFields', otherFields)
@@ -75,6 +78,8 @@ const updateOrCreateUser = (req, res) => {
   if (additionalColumns.length > 0) {
     // Thêm từng cột vào bảng nếu chưa có
     additionalColumns.forEach((col) => {
+      if (!validCoins.includes(col)) return
+
       const addColumnQuery = `ALTER TABLE user ADD COLUMN ${col} TEXT`
 
       db.run(addColumnQuery, [], (err) => {
