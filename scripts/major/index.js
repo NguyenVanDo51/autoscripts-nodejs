@@ -342,9 +342,9 @@ class GLaDOS {
           }
         }
 
-        await this.handleDurovTask(access_token, proxy)
-        await this.holdCoins(access_token, proxy)
-        await this.swipeCoin(access_token, proxy)
+        // await this.handleDurovTask(access_token, proxy)
+        // await this.holdCoins(access_token, proxy)
+        // await this.swipeCoin(access_token, proxy)
 
         const tasks = await this.getDailyTasks(access_token, proxy)
         if (tasks) {

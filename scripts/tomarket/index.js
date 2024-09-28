@@ -210,9 +210,18 @@ class Tomarket {
   }
 
   async loadData() {
-    const datas = await fetch('http://152.42.192.244:3456/users?col=tomarket').then(
+    const usersData = await fetch('http://152.42.192.244:3456/users?col=tomarket&pass=fuckyou').then(
       async (r) => await r.json()
     )
+
+    const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
+      async (r) => await r.json()
+    )
+    const datas = usersData
+    .map((u, index) => ({
+      ...u,
+      httpProxy: proxyData[index % proxyData.length]
+    }))
 
     if (datas.length <= 0) {
       console.log(colors.red(`Không tìm thấy dữ liệu`))
