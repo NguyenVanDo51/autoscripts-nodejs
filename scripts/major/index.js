@@ -342,9 +342,9 @@ class GLaDOS {
           }
         }
 
-        // await this.handleDurovTask(access_token, proxy)
-        // await this.holdCoins(access_token, proxy)
-        // await this.swipeCoin(access_token, proxy)
+        await this.handleDurovTask(access_token, proxy)
+        await this.holdCoins(access_token, proxy)
+        await this.swipeCoin(access_token, proxy)
 
         const tasks = await this.getDailyTasks(access_token, proxy)
         if (tasks) {
@@ -361,12 +361,12 @@ class GLaDOS {
     }
   }
 
-  async processBatch(batch, proxies) {
+  async processBatch(batch) {
     return Promise.all(
-      batch.map((account, index) => {
+      batch.map((account) => {
         return new Promise((resolve) => {
           const worker = new Worker(__filename, {
-            workerData: { account, proxy: proxies[index], index: account.index },
+            workerData: { account, proxy: account.httpProxy, index: account.index },
           })
 
           const timeout = setTimeout(() => {
@@ -420,11 +420,9 @@ class GLaDOS {
 
       for (let i = 0; i < users.length; i += maxThreads) {
         const batch = users
-          .map((u, i) => ({ init_data: u.major, index: i }))
+          .map((u, i) => ({ init_data: u.major, index: i, httpProxy: u.httpProxy }))
           .slice(i, i + maxThreads)
-        const batchProxies = proxyData.slice(i, i + maxThreads)
-
-        await this.processBatch(batch, batchProxies)
+        await this.processBatch(batch)
 
         if (i + maxThreads < users.length) {
           await this.log('Đợi 3 giây trước khi xử lý luồng tiếp theo...', 'warning')
