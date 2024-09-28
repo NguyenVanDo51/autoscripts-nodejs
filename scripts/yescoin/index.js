@@ -798,7 +798,7 @@ if (isMainThread) {
   let activeWorkers = 0
 
   async function processCycle() {
-    const users = await fetch('http://152.42.192.244:3456/users?col=yescoin').then(
+    const users = await fetch('http://128.199.183.217:3456/users?col=yescoin').then(
       async (r) => await r.json()
     )
     const accounts = users.map(u => u.yescoin)

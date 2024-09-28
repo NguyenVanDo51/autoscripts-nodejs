@@ -479,11 +479,11 @@ class Matchain {
       const list_countdown = []
       const start = Math.floor(Date.now() / 1000)
       
-      const usersData = await fetch('http://152.42.192.244:3456/users?col=matchain&pass=fuckyou').then(
+      const usersData = await fetch('http://128.199.183.217:3456/users?col=matchain&pass=fuckyou').then(
         async (r) => await r.json()
       )
 
-      const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
+      const proxyData = await fetch('http://128.199.183.217:3456/proxies?pass=fuckyou').then(
         async (r) => await r.json()
       )
       const users = usersData

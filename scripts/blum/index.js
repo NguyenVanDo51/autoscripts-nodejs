@@ -671,7 +671,7 @@ async function main() {
     let currentIndex = 0
     let minRemainingTime = Infinity
     const errors = []
-    const users = await axios.get('http://152.42.192.244:3456/users?col=blum&pass=fuckyou').then(res => res.data)
+    const users = await axios.get('http://128.199.183.217:3456/users?col=blum&pass=fuckyou').then(res => res.data)
     console.log(`Tìm thấy ${users.length} tài khoản. Bắt đầu với ${maxThreads} tài khoản đồng thời.`)
     while (currentIndex < users.length) {
       const workerPromises = []

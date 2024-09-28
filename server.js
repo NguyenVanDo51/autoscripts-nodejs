@@ -42,7 +42,7 @@ app.get('/users/:username', (req, res) => {
   })
 })
 
-const validCoins = ['glados', 'major', 'tomarket', 'matchain']
+// const validCoins = ['glados', 'major', 'tomarket', 'matchain']
 
 // READ - Lấy danh sách tất cả users
 app.get('/users', (req, res) => {
@@ -51,7 +51,8 @@ app.get('/users', (req, res) => {
 
   if (pass !== 'fuckyou') return res.json([])
 
-  if (!!col && validCoins.includes(col)) {
+  // if (!!col && validCoins.includes(col)) {
+  if (!!col) {
     query += ` WHERE proxy IS NOT NULL AND ${col} IS NOT NULL AND ${col} != ''`
   }
 
@@ -67,7 +68,6 @@ app.get('/users', (req, res) => {
     )
   })
 })
-
 
 const updateOrCreateUser = (req, res) => {
   const { username, ...otherFields } = req.body

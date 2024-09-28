@@ -18,7 +18,7 @@ url_upgrade_storage = 'https://elb.seeddao.org/api/v1/seed/storage-size/upgrade'
 url_upgrade_mining = 'https://elb.seeddao.org/api/v1/seed/mining-speed/upgrade'
 url_upgrade_holy = 'https://elb.seeddao.org/api/v1/upgrades/holy-water'
 url_get_profile = 'https://elb.seeddao.org/api/v1/profile'
-url_user = 'http://152.42.192.244:3456/users'
+url_user = 'http://128.199.183.217:3456/users'
 
 headers = {
     'accept': 'application/json, text/plain, */*',
