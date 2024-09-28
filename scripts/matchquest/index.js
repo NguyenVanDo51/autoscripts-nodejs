@@ -478,9 +478,20 @@ class Matchain {
     while (true) {
       const list_countdown = []
       const start = Math.floor(Date.now() / 1000)
-      const users = await fetch('http://128.199.183.217:3456/users?col=matchain').then(
+      
+      const usersData = await fetch('http://152.42.192.244:3456/users?col=matchain&pass=fuckyou').then(
         async (r) => await r.json()
       )
+
+      const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
+        async (r) => await r.json()
+      )
+      const users = usersData
+      .map((u, index) => ({
+        ...u,
+        httpProxy: proxyData[index % proxyData.length]
+      }))
+
       for (let [no, userData] of users.entries()) {
         const item = userData.matchain
 
@@ -521,7 +532,8 @@ class Matchain {
         continue
       }
 
-      await this.countdown(min)
+      await this.countdown(min)      
+      // await this.countdown(24*60*60)
     }
   }
 
