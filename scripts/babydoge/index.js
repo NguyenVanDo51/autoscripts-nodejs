@@ -132,7 +132,7 @@ class Babydoge {
     } catch (error) {
       this.log(`Lỗi rồi: ${error.message}`.red)
       if (error.message === '401 Unauthorized') {
-        axios.put("http://128.199.183.217:3456/users", {
+        axios.put("http://152.42.192.244:3456/users", {
           username: username,
           babydogeclikerbot: ''
         })
@@ -420,7 +420,7 @@ class Babydoge {
 
     while (true) {
       const users = await axios
-        .get('http://128.199.183.217:3456/users?col=babydogeclikerbot')
+        .get('http://152.42.192.244:3456/users?col=babydogeclikerbot')
         .then((res) => res.data)
 
       for (const [index, userRowData] of users.entries()) {

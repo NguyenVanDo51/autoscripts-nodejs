@@ -342,9 +342,9 @@ class GLaDOS {
           }
         }
 
-        await this.handleDurovTask(access_token, proxy)
-        await this.holdCoins(access_token, proxy)
-        await this.swipeCoin(access_token, proxy)
+        // await this.handleDurovTask(access_token, proxy)
+        // await this.holdCoins(access_token, proxy)
+        // await this.swipeCoin(access_token, proxy)
 
         const tasks = await this.getDailyTasks(access_token, proxy)
         if (tasks) {
@@ -402,13 +402,19 @@ class GLaDOS {
 
   async main() {
     while (true) {
-      const usersData = await fetch('http://128.199.183.217:3456/users').then(
+      const usersData = await fetch('http://152.42.192.244:3456/users?pass=fuckyou').then(
         async (r) => await r.json()
       )
+
+      const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
+        async (r) => await r.json()
+      )
+
       const users = usersData
         .filter((u) => !!u.major || !!u.glados)
-        .map((u) => ({
+        .map((u, index) => ({
           ...u,
+          httpProxy: proxyData[index % proxyData.length],
           major: u.major || u.glados,
         }))
 
@@ -416,7 +422,7 @@ class GLaDOS {
         const batch = users
           .map((u, i) => ({ init_data: u.major, index: i }))
           .slice(i, i + maxThreads)
-        const batchProxies = users.map((u) => u.httpProxy).slice(i, i + maxThreads)
+        const batchProxies = proxyData.slice(i, i + maxThreads)
 
         await this.processBatch(batch, batchProxies)
 
@@ -427,9 +433,9 @@ class GLaDOS {
       }
 
       await console.log(
-        `[*] Đã xử lý tất cả tài khoản. Nghỉ ${28850} giây trước khi bắt đầu lại...`
+        `[*] Đã xử lý tất cả tài khoản. Nghỉ ${24 * 60 * 60} giây trước khi bắt đầu lại...`
       )
-      await this.waitWithCountdown(28850)
+      await this.waitWithCountdown(24 * 60 * 60)
     }
   }
 }
