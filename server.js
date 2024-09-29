@@ -78,7 +78,7 @@ const updateOrCreateUser = (req, res) => {
   if (additionalColumns.length > 0) {
     // Thêm từng cột vào bảng nếu chưa có
     additionalColumns.forEach((col) => {
-      if (!validCoins.includes(col)) return
+      // if (!validCoins.includes(col)) return
 
       const addColumnQuery = `ALTER TABLE user ADD COLUMN ${col} TEXT`
 

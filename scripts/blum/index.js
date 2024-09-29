@@ -506,7 +506,7 @@ class GameBot {
           (task) => !skipTasks.includes(task.id) && task.status !== 'FINISHED' && !task.isHidden
         )
         //  TODO: delete
-        taskFilter = []
+        // taskFilter = []
         console.log('taskFilter', taskFilter.length)
         for (const task of taskFilter) {
           switch (task.status) {

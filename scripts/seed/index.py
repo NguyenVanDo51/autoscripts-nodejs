@@ -18,7 +18,8 @@ url_upgrade_storage = 'https://elb.seeddao.org/api/v1/seed/storage-size/upgrade'
 url_upgrade_mining = 'https://elb.seeddao.org/api/v1/seed/mining-speed/upgrade'
 url_upgrade_holy = 'https://elb.seeddao.org/api/v1/upgrades/holy-water'
 url_get_profile = 'https://elb.seeddao.org/api/v1/profile'
-url_user = 'http://128.199.183.217:3456/users?pass=fuckyou'
+url_user = 'http://128.199.183.217:3456/users'
+url_proxy = 'http://128.199.183.217:3456/proxies?pass=fuckyou'
 
 headers = {
     'accept': 'application/json, text/plain, */*',
@@ -227,13 +228,18 @@ def main():
     confirm_task = 'y'
 
     while True:
-        data  = requests.get(f'{url_user}?col=seeddao')
+        data = requests.get(f'{url_user}?col=seeddao&pass=fuckyou')
         data = data.json()
 
-        for item in data:
+        proxies  = requests.get(url_proxy)
+        proxies = proxies.json()
+        print(len(data))
+
+        for index, item in enumerate(data):
+            print("tài khoản", index)
             try:
                 token = item['seeddao']
-                proxy = item['httpProxy']
+                proxy = proxies[index % len(proxies)]
                 username = item['username']
 
                 headers['telegram-data'] = token
