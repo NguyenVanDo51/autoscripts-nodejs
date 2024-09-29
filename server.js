@@ -153,7 +153,6 @@ app.delete('/users/:username', (req, res) => {
 const proxyList = [
   '14.225.57.205:12345:surn0t9s:zFIK6g8d',
   '103.252.93.104:44935:EIbFyihAeB:lO89svdY8EVpCKF801',
-  '103.252.93.85:27218:uLyyhgHKcl:4sqKbuqhIonVGA5361',
   '14.225.49.152:6666:ProxyVN282165:wEbC0a2A',
   '103.68.85.190:46875:NBhbWLCNgs:yVmSl36XsX9tRhT457',
   '103.68.85.185:15287:YhBvlsQoWj:YpVQdWp9tqq9UjO440',
@@ -189,6 +188,16 @@ const proxyList = [
   '103.190.121.45:41090:zJCNUeOsqt:Fs9TKrIvH3BRZym396',
   '103.252.93.23:52595:YQAArWWKti:uA52UNZ16Sr9EQL033',
   '103.190.120.251:46349:uSdIzmNFSh:4HFCIGpJrdrtAQi279',
+  '160.22.175.128:33253:userdata06:passdata06',
+  '14.225.58.147:50000:PVN674139:xKnE3u4D',
+  '160.22.174.117:35270:userdata02:passdata02',
+  '180.214.236.84:20211:Proxyviet51306:hWXF1p5E',
+  '14.225.48.178:6666:rylv5t8i:rYLV5t8I',
+  '202.55.132.52:53235:ncrk9p5t:nCRK9p5T',
+  '14.225.52.193:61196:mztr1h8r:mZtR1h8r',
+  '14.225.49.154:6666:rhvt1t2p:rHVT1t2p',
+  '14.225.62.25:6666:zmgw1e0z:zMGW1e0Z',
+  '14.225.49.129:6666:upnj9u2r:tEiM2o4O',
 ]
 
 app.get('/proxies', (req, res) => {
