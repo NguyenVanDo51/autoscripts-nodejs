@@ -509,7 +509,7 @@ class Matchain {
         try {
           proxyIP = await this.checkProxyIP(proxy)
         } catch (error) {
-          this.log(`Lỗi kiểm tra IP proxy: ${error.message}`, 'warning')
+          this.log(`Lỗi kiểm tra IP proxy: ${error.message} ${proxy}`, 'warning')
         }
         console.log(
           `========== MatchQuest | Tài khoản ${no + 1} | ${user['first_name'].green} | ip: ${proxyIP} ==========`

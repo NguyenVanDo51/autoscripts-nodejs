@@ -166,7 +166,7 @@ class CatsAPI {
 
           await this.completeTasks(authorization, proxy)
         } catch (error) {
-          console.log(error)
+          console.log(error.response?.data)
           this.log(`Lỗi khi xử lý tài khoản: ${error.message}`, 'error')
         }
       }

@@ -75,11 +75,6 @@
                     console.log('e', e)
                   })
                 }
-
-                iframe.src = iframe.src
-                  .replace('tgWebAppPlatform=weba', 'tgWebAppPlatform=android')
-                  .replace('tgWebAppPlatform=web', 'tgWebAppPlatform=android')
-                iframe.contentWindow.location.reload()
               }
             }
           }

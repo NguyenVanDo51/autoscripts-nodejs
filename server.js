@@ -151,7 +151,6 @@ app.delete('/users/:username', (req, res) => {
 })
 
 const proxyList = [
-  '14.225.57.205:12345:surn0t9s:zFIK6g8d',
   '103.252.93.104:44935:EIbFyihAeB:lO89svdY8EVpCKF801',
   '14.225.49.152:6666:ProxyVN282165:wEbC0a2A',
   '103.68.85.190:46875:NBhbWLCNgs:yVmSl36XsX9tRhT457',
@@ -240,7 +239,6 @@ app.get('/ui/users/edit/:username', (req, res) => {
       '49.236.211.161:3179:modsbe1o:CjHWzgw34QRJ',
       '14.225.57.7:12345:PVN77433:yVQB7z2q',
       'prxmik1.ddns.net:20009:Acbd1234:Acbd1234^%',
-      '14.225.57.205:12345:surn0t9s:zFIK6g8d',
     ]
     res.render('editUser', { user: row, proxyList }) // Giả sử bạn có một template cho việc sửa user
   })
