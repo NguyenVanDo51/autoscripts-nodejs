@@ -5,7 +5,30 @@ const axios = require('axios')
 const colors = require('colors')
 const readline = require('readline')
 const { performance } = require('perf_hooks')
+const getProxy = () => {
+  const path = require('path')
+  const fs = require('fs')
+  function convertProxyFormat(proxy) {
+    try {
+      // Tách chuỗi proxy thành các phần
+      const [ip, port, user, pass] = proxy.split(':')
 
+      // Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+      const formattedProxy = `http://${user}:${pass}@${ip}:${port}`
+
+      return formattedProxy
+    } catch (e) {
+      return proxy
+    }
+  }
+  const proxyData = fs
+    .readFileSync(path.join(__dirname, '..', '', 'proxy.txt'), 'utf-8')
+    .split('\n')
+    .map((line) => convertProxyFormat(line.trim()))
+    .filter((line) => line !== '')
+  
+  return proxyData
+}
 class Babydoge {
   constructor() {
     this.headers = {
@@ -132,7 +155,7 @@ class Babydoge {
     } catch (error) {
       this.log(`Lỗi rồi: ${error.message}`.red)
       if (error.message === '401 Unauthorized') {
-        axios.put("http://152.42.192.244:3456/users", {
+        axios.put("http://128.199.183.217:3456/users?pass=fuckyou", {
           username: username,
           babydogeclikerbot: ''
         })
@@ -420,12 +443,13 @@ class Babydoge {
 
     while (true) {
       const users = await axios
-        .get('http://152.42.192.244:3456/users?col=babydogeclikerbot')
+        .get('http://128.199.183.217:3456/users?pass=fuckyou&col=babydogeclikerbot')
         .then((res) => res.data)
+      const proxies = getProxy()
 
       for (const [index, userRowData] of users.entries()) {
         const tgData = userRowData.babydogeclikerbot
-        const proxy = userRowData.httpProxy
+        const proxy = proxies[index % proxies.length]
         const userData = JSON.parse(decodeURIComponent(tgData.split('&')[1].split('=')[1]))
         const username = userRowData.username
         const ip = await this.checkProxyIP(proxy)

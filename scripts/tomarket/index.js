@@ -8,6 +8,30 @@ const { DateTime } = require('luxon')
 const { HttpsProxyAgent } = require('https-proxy-agent')
 
 const tokenPath = path.join(__dirname, 'token.json');
+const getProxy = () => {
+  const path = require('path')
+  const fs = require('fs')
+  function convertProxyFormat(proxy) {
+    try {
+      // Tách chuỗi proxy thành các phần
+      const [ip, port, user, pass] = proxy.split(':')
+
+      // Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+      const formattedProxy = `http://${user}:${pass}@${ip}:${port}`
+
+      return formattedProxy
+    } catch (e) {
+      return proxy
+    }
+  }
+  const proxyData = fs
+    .readFileSync(path.join(__dirname, '..', '', 'proxy.txt'), 'utf-8')
+    .split('\n')
+    .map((line) => convertProxyFormat(line.trim()))
+    .filter((line) => line !== '')
+  
+  return proxyData
+}
 
 class Tomarket {
   constructor() {
@@ -210,13 +234,12 @@ class Tomarket {
   }
 
   async loadData() {
-    const usersData = await fetch('http://152.42.192.244:3456/users?col=tomarket&pass=fuckyou').then(
+    const usersData = await fetch('http://128.199.183.217:3456/users?col=tomarket&pass=fuckyou').then(
       async (r) => await r.json()
     )
 
-    const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
-      async (r) => await r.json()
-    )
+    const proxyData = getProxy()
+    
     const datas = usersData
     .map((u, index) => ({
       ...u,

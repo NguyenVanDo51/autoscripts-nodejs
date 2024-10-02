@@ -11,6 +11,9 @@
     "tomarket": "node scripts/tomarket/index.js",
     "babydoge": "node scripts/babydoge/index.js",
     "yescoin": "node scripts/yescoin/index.js",
+    "cat": "node scripts/cat/index.js",
+    "xkucoin": "node scripts/xkucoin/index.js",
+    "coub": "node scripts/coub/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

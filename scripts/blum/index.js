@@ -506,7 +506,7 @@ class GameBot {
           (task) => !skipTasks.includes(task.id) && task.status !== 'FINISHED' && !task.isHidden
         )
         //  TODO: delete
-        taskFilter = []
+        // taskFilter = []
         console.log('taskFilter', taskFilter.length)
         for (const task of taskFilter) {
           switch (task.status) {
@@ -596,7 +596,7 @@ class GameBot {
       } else {
         await this.log('Không thể kiểm tra số dư bạn bè!', 'error')
       }
-      balanceInfo.playPasses = 0 // TODO: delete
+      // balanceInfo.playPasses = 0 // TODO: delete
       if (balanceInfo && balanceInfo.playPasses > 0) {
         for (let j = 0; j < balanceInfo.playPasses; j++) {
           let playAttempts = 0
@@ -671,7 +671,7 @@ async function main() {
     let currentIndex = 0
     let minRemainingTime = Infinity
     const errors = []
-    const users = await axios.get('http://152.42.192.244:3456/users?col=blum&pass=fuckyou').then(res => res.data)
+    const users = await axios.get('http://128.199.183.217:3456/users?col=blum&pass=fuckyou').then(res => res.data)
     console.log(`Tìm thấy ${users.length} tài khoản. Bắt đầu với ${maxThreads} tài khoản đồng thời.`)
     while (currentIndex < users.length) {
       const workerPromises = []

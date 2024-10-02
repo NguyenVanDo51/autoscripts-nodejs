@@ -8,6 +8,31 @@ const path = require('path')
 
 const maxThreads = 10 // Số luồng tối đa chạy đồng thời
 
+const getProxy = () => {
+  const path = require('path')
+  const fs = require('fs')
+  function convertProxyFormat(proxy) {
+    try {
+      // Tách chuỗi proxy thành các phần
+      const [ip, port, user, pass] = proxy.split(':')
+
+      // Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+      const formattedProxy = `http://${user}:${pass}@${ip}:${port}`
+
+      return formattedProxy
+    } catch (e) {
+      return proxy
+    }
+  }
+  const proxyData = fs
+    .readFileSync(path.join(__dirname, '..', '', 'proxy.txt'), 'utf-8')
+    .split('\n')
+    .map((line) => convertProxyFormat(line.trim()))
+    .filter((line) => line !== '')
+  
+  return proxyData
+}
+
 class GLaDOS {
   constructor() {
     this.authUrl = 'https://major.glados.app/api/auth/tg/'
@@ -342,9 +367,9 @@ class GLaDOS {
           }
         }
 
-        // await this.handleDurovTask(access_token, proxy)
-        // await this.holdCoins(access_token, proxy)
-        // await this.swipeCoin(access_token, proxy)
+        await this.handleDurovTask(access_token, proxy)
+        await this.holdCoins(access_token, proxy)
+        await this.swipeCoin(access_token, proxy)
 
         const tasks = await this.getDailyTasks(access_token, proxy)
         if (tasks) {
@@ -361,7 +386,7 @@ class GLaDOS {
     }
   }
 
-  async processBatch(batch, proxies) {
+  async processBatch(batch) {
     return Promise.all(
       batch.map((account) => {
         return new Promise((resolve) => {
@@ -402,13 +427,11 @@ class GLaDOS {
 
   async main() {
     while (true) {
-      const usersData = await fetch('http://152.42.192.244:3456/users?pass=fuckyou').then(
+      const usersData = await fetch('http://128.199.183.217:3456/users?pass=fuckyou').then(
         async (r) => await r.json()
       )
 
-      const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
-        async (r) => await r.json()
-      )
+      const proxyData = getProxy()
 
       const users = usersData
         .filter((u) => !!u.major || !!u.glados)
@@ -422,7 +445,6 @@ class GLaDOS {
         const batch = users
           .map((u, i) => ({ init_data: u.major, index: i, httpProxy: u.httpProxy }))
           .slice(i, i + maxThreads)
-
         await this.processBatch(batch)
 
         if (i + maxThreads < users.length) {

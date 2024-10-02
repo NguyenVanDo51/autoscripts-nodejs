@@ -42,7 +42,7 @@ app.get('/users/:username', (req, res) => {
   })
 })
 
-const validCoins = ['glados', 'major', 'tomarket', 'matchain']
+// const validCoins = ['glados', 'major', 'tomarket', 'matchain']
 
 // READ - Lấy danh sách tất cả users
 app.get('/users', (req, res) => {
@@ -51,7 +51,8 @@ app.get('/users', (req, res) => {
 
   if (pass !== 'fuckyou') return res.json([])
 
-  if (!!col && validCoins.includes(col)) {
+  // if (!!col && validCoins.includes(col)) {
+  if (!!col) {
     query += ` WHERE proxy IS NOT NULL AND ${col} IS NOT NULL AND ${col} != ''`
   }
 
@@ -68,7 +69,6 @@ app.get('/users', (req, res) => {
   })
 })
 
-
 const updateOrCreateUser = (req, res) => {
   const { username, ...otherFields } = req.body
   console.log('otherFields', otherFields)
@@ -78,7 +78,7 @@ const updateOrCreateUser = (req, res) => {
   if (additionalColumns.length > 0) {
     // Thêm từng cột vào bảng nếu chưa có
     additionalColumns.forEach((col) => {
-      if (!validCoins.includes(col)) return
+      // if (!validCoins.includes(col)) return
 
       const addColumnQuery = `ALTER TABLE user ADD COLUMN ${col} TEXT`
 
@@ -151,15 +151,12 @@ app.delete('/users/:username', (req, res) => {
 })
 
 const proxyList = [
-  '14.225.57.205:12345:surn0t9s:zFIK6g8d',
   '103.252.93.104:44935:EIbFyihAeB:lO89svdY8EVpCKF801',
-  '103.252.93.85:27218:uLyyhgHKcl:4sqKbuqhIonVGA5361',
   '14.225.49.152:6666:ProxyVN282165:wEbC0a2A',
   '103.68.85.190:46875:NBhbWLCNgs:yVmSl36XsX9tRhT457',
   '103.68.85.185:15287:YhBvlsQoWj:YpVQdWp9tqq9UjO440',
   '103.68.85.182:58621:BRGvbvtEOV:uPHmdvBBhnPBV3j142',
   '103.68.84.236:64363:OKVkBQQJDy:k31FGJLLslLuNTi588',
-  '103.68.85.182:58621:BRGvbvtEOV:uPHmdvBBhnPBV3j142',
   '103.68.85.201:31419:qKfxftxUlI:wqSzcialBSRzP6W660',
   '103.68.85.150:64372:xwqRjqDQEQ:5Xo657BdC1xv2xl240',
   '103.176.22.213:46361:LincoayHmU:jvAk5ZLsdjBaU8V737',
@@ -190,6 +187,16 @@ const proxyList = [
   '103.190.121.45:41090:zJCNUeOsqt:Fs9TKrIvH3BRZym396',
   '103.252.93.23:52595:YQAArWWKti:uA52UNZ16Sr9EQL033',
   '103.190.120.251:46349:uSdIzmNFSh:4HFCIGpJrdrtAQi279',
+  '160.22.175.128:33253:userdata06:passdata06',
+  '14.225.58.147:50000:PVN674139:xKnE3u4D',
+  '160.22.174.117:35270:userdata02:passdata02',
+  '180.214.236.84:20211:Proxyviet51306:hWXF1p5E',
+  '14.225.48.178:6666:rylv5t8i:rYLV5t8I',
+  '202.55.132.52:53235:ncrk9p5t:nCRK9p5T',
+  '14.225.52.193:61196:mztr1h8r:mZtR1h8r',
+  '14.225.49.154:6666:rhvt1t2p:rHVT1t2p',
+  '14.225.62.25:6666:zmgw1e0z:zMGW1e0Z',
+  '14.225.49.129:6666:upnj9u2r:tEiM2o4O',
 ]
 
 app.get('/proxies', (req, res) => {
@@ -232,7 +239,6 @@ app.get('/ui/users/edit/:username', (req, res) => {
       '49.236.211.161:3179:modsbe1o:CjHWzgw34QRJ',
       '14.225.57.7:12345:PVN77433:yVQB7z2q',
       'prxmik1.ddns.net:20009:Acbd1234:Acbd1234^%',
-      '14.225.57.205:12345:surn0t9s:zFIK6g8d',
     ]
     res.render('editUser', { user: row, proxyList }) // Giả sử bạn có một template cho việc sửa user
   })
