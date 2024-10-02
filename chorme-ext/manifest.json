@@ -4,7 +4,7 @@
   "name": "Hudo NodeJS Airdrop Automation",
   "description": "Hudo NodeJS Airdrop Automation",
   "version": "1.0.2",
-  "permissions": ["tabs", "alarms"],
+  "permissions": ["tabs", "alarms", "webRequest", "cookies", "activeTab"],
   "host_permissions": ["*://*/*"],
   "background": {
     "service_worker": "background.js"

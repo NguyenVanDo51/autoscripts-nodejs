@@ -7,6 +7,7 @@ const os = require('os')
 const colors = require('colors')
 const { DateTime } = require('luxon')
 const HttpsProxyAgent = require('https-proxy-agent').HttpsProxyAgent
+
 const minimist = require('minimist')
 
 const headers = {
@@ -23,6 +24,31 @@ const headers = {
   'sec-fetch-dest': 'empty',
   referer: 'https://tgapp.matchain.io/',
   'accept-language': 'en,en-US;q=0.9',
+}
+
+const getProxy = () => {
+  const path = require('path')
+  const fs = require('fs')
+  function convertProxyFormat(proxy) {
+    try {
+      // Tách chuỗi proxy thành các phần
+      const [ip, port, user, pass] = proxy.split(':')
+
+      // Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+      const formattedProxy = `http://${user}:${pass}@${ip}:${port}`
+
+      return formattedProxy
+    } catch (e) {
+      return proxy
+    }
+  }
+  const proxyData = fs
+    .readFileSync(path.join(__dirname, '..', '', 'proxy.txt'), 'utf-8')
+    .split('\n')
+    .map((line) => convertProxyFormat(line.trim()))
+    .filter((line) => line !== '')
+  
+  return proxyData
 }
 
 class Matchain {
@@ -50,11 +76,11 @@ class Matchain {
 
   async http(url, headers, data = null, proxy) {
     const proxyAgent = new HttpsProxyAgent(proxy)
-		
-		const config = {
-			headers,
+
+    const config = {
+      headers,
       httpsAgent: proxyAgent,
-		};
+    }
 
     while (true) {
       try {
@@ -146,7 +172,7 @@ class Matchain {
       tg_login_params: data,
     })
     this.log(`Bắt đầu đăng nhập`, 'info')
-    
+
     let res = await this.http(url, this.headers, payload, proxy)
     if (res.status !== 200) {
       this.log(`Đăng nhập không thành công! Status: ${res.status}`, 'error')
@@ -478,18 +504,15 @@ class Matchain {
     while (true) {
       const list_countdown = []
       const start = Math.floor(Date.now() / 1000)
-      
-      const usersData = await fetch('http://128.199.183.217:3456/users?pass=fuckyou&col=matchain').then(
-        async (r) => await r.json()
-      )
 
-      const proxyData = await fetch('http://128.199.183.217:3456/proxies?pass=fuckyou').then(
-        async (r) => await r.json()
-      )
-      const users = usersData
-      .map((u, index) => ({
+      const usersData = await fetch(
+        'http://128.199.183.217:3456/users?pass=fuckyou&col=matchain'
+      ).then(async (r) => await r.json())
+      const proxyData = getProxy()
+      
+      const users = usersData.map((u, index) => ({
         ...u,
-        httpProxy: proxyData[index % proxyData.length]
+        httpProxy: proxyData[index % proxyData.length],
       }))
 
       for (let [no, userData] of users.entries()) {
@@ -512,7 +535,9 @@ class Matchain {
           this.log(`Lỗi kiểm tra IP proxy: ${error.message} ${proxy}`, 'warning')
         }
         console.log(
-          `========== MatchQuest | Tài khoản ${no + 1} | ${user['first_name'].green} | ip: ${proxyIP} ==========`
+          `========== MatchQuest | Tài khoản ${no + 1} | ${
+            user['first_name'].green
+          } | ip: ${proxyIP} ==========`
         )
         try {
           const result = await this.login(item, proxy)
@@ -532,8 +557,8 @@ class Matchain {
         continue
       }
 
-      // await this.countdown(min)      
-      await this.countdown(8*60*60)
+      // await this.countdown(min)
+      await this.countdown(8 * 60 * 60)
     }
   }
 

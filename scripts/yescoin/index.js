@@ -11,8 +11,33 @@ const defaultConfig = {
   TaskEnable: true,
   upgradeMultiEnable: true,
   upgradeFillEnable: true,
-  maxLevel: 5,
+  maxLevel: 10,
   maxThreads: 5,
+}
+
+const getProxy = () => {
+  const path = require('path')
+  const fs = require('fs')
+  function convertProxyFormat(proxy) {
+    try {
+      // Tách chuỗi proxy thành các phần
+      const [ip, port, user, pass] = proxy.split(':')
+
+      // Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+      const formattedProxy = `http://${user}:${pass}@${ip}:${port}`
+
+      return formattedProxy
+    } catch (e) {
+      return proxy
+    }
+  }
+  const proxyData = fs
+    .readFileSync(path.join(__dirname, '..', '', 'proxy.txt'), 'utf-8')
+    .split('\n')
+    .map((line) => convertProxyFormat(line.trim()))
+    .filter((line) => line !== '')
+  
+  return proxyData
 }
 
 class YesCoinBot {
@@ -802,8 +827,9 @@ if (isMainThread) {
       async (r) => await r.json()
     )
     const accounts = users.map(u => u.yescoin)
-    const proxies = users.map(u => u.httpProxy)
 
+    const proxies = getProxy()
+    console.log('proxies', proxies)
     let accountQueue = [...accounts]
 
     function startWorker() {
@@ -817,7 +843,7 @@ if (isMainThread) {
 
       const accountIndex = accounts.length - accountQueue.length
       const account = accountQueue.shift()
-      const proxy = proxies[accountIndex]
+      const proxy = proxies[accountIndex % proxies.length]
 
       activeWorkers++
 

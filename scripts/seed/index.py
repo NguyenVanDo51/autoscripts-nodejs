@@ -68,6 +68,20 @@ def get_proxy_dict(proxy):
         "http": proxy,
         "https": proxy
     }
+
+def convert_proxy_format(proxy):
+    try:
+        # Tách chuỗi proxy thành các phần
+        ip, port, user, passwd = proxy.split(':')
+
+        # Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+        formatted_proxy = f"http://{user}:{passwd}@{ip}:{port}"
+
+        return formatted_proxy
+    except Exception as e:
+        return proxy
+
+
 def check_proxy_ip(proxy):
     try:
         response = requests.get('https://api.ipify.org?format=json', proxies=get_proxy_dict(proxy), timeout=10)
@@ -231,15 +245,12 @@ def main():
         data = requests.get(f'{url_user}?col=seeddao&pass=fuckyou')
         data = data.json()
 
-        proxies  = requests.get(url_proxy)
-        proxies = proxies.json()
-        print(len(data))
-
+        proxies = load_proxies()
         for index, item in enumerate(data):
-            print("tài khoản", index)
+            print(f"Tài khoản {index} trong {len(data)}")
             try:
                 token = item['seeddao']
-                proxy = proxies[index % len(proxies)]
+                proxy = convert_proxy_format(proxies[index % len(proxies)])
                 username = item['username']
 
                 headers['telegram-data'] = token
@@ -247,7 +258,7 @@ def main():
 
                 info = get_profile(proxy, username)
                 if info:
-                    print(f"Đang xử lý tài khoản {info['data']['name']}")
+                    print(f"[Tài khoản {index} / {len(data)}] [{info['data']['name']}] [{proxies[index % len(proxies)]}]")
                 else:
                     print("Lấy thông tin profile thất bại, bỏ qua")
                     continue

