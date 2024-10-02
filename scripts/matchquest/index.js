@@ -506,7 +506,7 @@ class Matchain {
       const start = Math.floor(Date.now() / 1000)
 
       const usersData = await fetch(
-        'http://128.199.183.217:3456/users?pass=fuckyou&col=matchain'
+        'http://152.42.192.244:3456/users?pass=fuckyou&col=matchain'
       ).then(async (r) => await r.json())
       const proxyData = getProxy()
       

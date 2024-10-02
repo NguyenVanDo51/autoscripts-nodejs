@@ -275,7 +275,7 @@ class Coub {
 
     async readAccountData() {
         try {
-          const users = await fetch('http://128.199.183.217:3456/users?pass=fuckyou&col=coub').then(
+          const users = await fetch('http://152.42.192.244:3456/users?pass=fuckyou&col=coub').then(
             async (r) => await r.json()
           )
           return users.map(u => u.coub)

@@ -155,7 +155,7 @@ class Babydoge {
     } catch (error) {
       this.log(`Lỗi rồi: ${error.message}`.red)
       if (error.message === '401 Unauthorized') {
-        axios.put("http://128.199.183.217:3456/users?pass=fuckyou", {
+        axios.put("http://152.42.192.244:3456/users?pass=fuckyou", {
           username: username,
           babydogeclikerbot: ''
         })
@@ -443,7 +443,7 @@ class Babydoge {
 
     while (true) {
       const users = await axios
-        .get('http://128.199.183.217:3456/users?pass=fuckyou&col=babydogeclikerbot')
+        .get('http://152.42.192.244:3456/users?pass=fuckyou&col=babydogeclikerbot')
         .then((res) => res.data)
       const proxies = getProxy()
 

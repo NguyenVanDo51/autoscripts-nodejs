@@ -132,11 +132,11 @@ class CatsAPI {
   }
 
   async main() {
-    const usersData = await fetch('http://128.199.183.217:3456/users?pass=fuckyou&col=tgapps').then(
+    const usersData = await fetch('http://152.42.192.244:3456/users?pass=fuckyou&col=tgapps').then(
       async (r) => await r.json()
     )
 
-    const proxyData = await fetch('http://128.199.183.217:3456/proxies?pass=fuckyou').then(
+    const proxyData = await fetch('http://152.42.192.244:3456/proxies?pass=fuckyou').then(
       async (r) => await r.json()
     )
     const data = usersData.filter((u) => !!u.tgapps).map((u) => u.tgapps)
