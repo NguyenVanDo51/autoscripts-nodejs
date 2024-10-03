@@ -244,7 +244,7 @@ def main():
     while True:
         data = requests.get(f'{url_user}?col=seeddao&pass=fuckyou')
         data = data.json()
-
+        print("data", data)
         proxies = load_proxies()
         for index, item in enumerate(data):
             print(f"Tài khoản {index} trong {len(data)}")

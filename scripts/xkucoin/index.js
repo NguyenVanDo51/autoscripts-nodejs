@@ -167,7 +167,6 @@ class KucoinAPIClient {
       const increment = points[j]
       currentMolecule -= increment
         const result = await this.increaseGold(cookie, increment, currentMolecule, proxyAgent)
-        console.log('result.data', result.data)
         
       if (result.data.success) {
           totalPoints += increment
