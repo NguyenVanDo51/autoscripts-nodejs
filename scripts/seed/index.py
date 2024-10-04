@@ -236,8 +236,8 @@ def main():
     # confirm_holy = input("Tự động nâng cấp holy? (y/n): ")
     # confirm_task = input("Tự động hoàn thành nhiệm vụ? (y/n): ")
 
-    confirm_storage = 'y'
-    confirm_mining = 'y'
+    confirm_storage = 'n'
+    confirm_mining = 'n'
     confirm_holy = 'y'
     confirm_task = 'y'
 
