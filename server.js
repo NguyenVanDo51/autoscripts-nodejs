@@ -53,7 +53,7 @@ app.get('/users', (req, res) => {
 
   // if (!!col && validCoins.includes(col)) {
   if (!!col) {
-    query += ` WHERE proxy IS NOT NULL AND ${col} IS NOT NULL AND ${col} != ''`
+    query += ` WHERE ${col} IS NOT NULL AND ${col} != ''`
   }
 
   db.all(query, [], (err, rows) => {
