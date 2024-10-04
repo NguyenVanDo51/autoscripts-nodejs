@@ -456,7 +456,7 @@ class GLaDOS {
       await console.log(
         `[*] Đã xử lý tất cả tài khoản. Nghỉ ${24 * 60 * 60} giây trước khi bắt đầu lại...`
       )
-      await this.waitWithCountdown(24 * 60 * 60)
+      await this.waitWithCountdown(12 * 60 * 60)
     }
   }
 }
