@@ -298,7 +298,7 @@ def main():
             except Exception as e:
                 sys.stdout.write(f"\r{Fore.RED+Style.BRIGHT}Lỗi xảy ra: {e}")
 
-        for i in range(7200, 0, -1):
+        for i in range(6 * 60 * 60, 0, -1):
             sys.stdout.write(f"\r{Fore.CYAN+Style.BRIGHT}============ Đã xử lý hết tài khoản, đợi {i} giây trước khi tiếp tục vòng lặp ============")
             sys.stdout.flush()
             time.sleep(1)
