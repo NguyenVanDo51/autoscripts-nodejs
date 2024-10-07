@@ -29,7 +29,7 @@ const getProxy = () => {
     .split('\n')
     .map((line) => convertProxyFormat(line.trim()))
     .filter((line) => line !== '')
-  
+
   return proxyData
 }
 
@@ -219,7 +219,7 @@ class GLaDOS {
     return getResponse
   }
 
-  async getDailyTasks(token, proxy) {
+  async getOnetimeTasks(token, proxy) {
     const tasks = await this.makeRequest(
       'get',
       `${this.tasksUrl}?is_daily=false`,
@@ -228,7 +228,26 @@ class GLaDOS {
       proxy
     )
     if (Array.isArray(tasks)) {
-      return tasks.map((task) => ({ id: task.id, title: task.title }))
+      return tasks
+        .filter((t) => !t.is_completed)
+        .map((task) => ({ id: task.id, title: task.title }))
+    } else {
+      return null
+    }
+  }
+
+  async getDailyTasks(token, proxy) {
+    const tasks = await this.makeRequest(
+      'get',
+      `${this.tasksUrl}?is_daily=true&is_completed=false`,
+      null,
+      token,
+      proxy
+    )
+    if (Array.isArray(tasks)) {
+      return tasks
+        .filter((t) => !t.is_completed)
+        .map((task) => ({ id: task.id, title: task.title }))
     } else {
       return null
     }
@@ -239,6 +258,13 @@ class GLaDOS {
     const result = await this.makeRequest('post', this.tasksUrl, payload, token, proxy)
     if (result.is_completed) {
       await this.log(`Làm nhiệm vụ ${task.id}: ${task.title} .. trạng thái: thành công`, 'success')
+    } else {
+      await this.log(
+        `Làm nhiệm vụ ${task.id}: ${task.title} .. trạng thái: không thành công | ${JSON.stringify(
+          result
+        )}`,
+        'error'
+      )
     }
     return result
   }
@@ -371,12 +397,15 @@ class GLaDOS {
         await this.holdCoins(access_token, proxy)
         await this.swipeCoin(access_token, proxy)
 
-        const tasks = await this.getDailyTasks(access_token, proxy)
-        if (tasks) {
-          for (const task of tasks) {
-            await this.completeTask(access_token, task, proxy)
-            await this.sleep(1000)
-          }
+        const oneTimeTasks = (await this.getDailyTasks(access_token, proxy)) || []
+        const dayliTasks = (await this.getDailyTasks(access_token, proxy)) || []
+
+        const tasks = oneTimeTasks.concat(dayliTasks)
+        console.log('getDailyTasks', tasks)
+
+        for (const task of tasks) {
+          await this.completeTask(access_token, task, proxy)
+          await this.sleep(1000)
         }
       } else {
         await this.log(`Không đọc được dữ liệu tài khoản`, 'error')

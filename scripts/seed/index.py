@@ -53,7 +53,7 @@ def load_credentials():
 
 def load_proxies():
     try:
-        with open('proxy.txt', 'r') as file:
+        with open('scripts/proxy.txt', 'r') as file:
             proxies = file.read().strip().split('\n')
         return proxies
     except FileNotFoundError:
