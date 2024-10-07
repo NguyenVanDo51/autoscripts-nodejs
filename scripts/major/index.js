@@ -258,13 +258,6 @@ class GLaDOS {
     const result = await this.makeRequest('post', this.tasksUrl, payload, token, proxy)
     if (result.is_completed) {
       await this.log(`Làm nhiệm vụ ${task.id}: ${task.title} .. trạng thái: thành công`, 'success')
-    } else {
-      await this.log(
-        `Làm nhiệm vụ ${task.id}: ${task.title} .. trạng thái: không thành công | ${JSON.stringify(
-          result
-        )}`,
-        'error'
-      )
     }
     return result
   }
@@ -401,7 +394,6 @@ class GLaDOS {
         const dayliTasks = (await this.getDailyTasks(access_token, proxy)) || []
 
         const tasks = oneTimeTasks.concat(dayliTasks)
-        console.log('getDailyTasks', tasks)
 
         for (const task of tasks) {
           await this.completeTask(access_token, task, proxy)
