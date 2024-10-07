@@ -14,6 +14,7 @@
     "cat": "node scripts/cat/index.js",
     "xkucoin": "node scripts/xkucoin/index.js",
     "coub": "node scripts/coub/index.js",
+    "seed": "python scripts/seed/index.py",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
