@@ -394,7 +394,6 @@ class GLaDOS {
         const dayliTasks = (await this.getDailyTasks(access_token, proxy)) || []
 
         const tasks = oneTimeTasks.concat(dayliTasks)
-        console.log('getDailyTasks', tasks)
 
         for (const task of tasks) {
           await this.completeTask(access_token, task, proxy)
