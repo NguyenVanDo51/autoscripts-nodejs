@@ -558,7 +558,7 @@ class Matchain {
       }
 
       // await this.countdown(min)
-      await this.countdown(8 * 60 * 60)
+      await this.countdown(11 * 60 * 60)
     }
   }
 
