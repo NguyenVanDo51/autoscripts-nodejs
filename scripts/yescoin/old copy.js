@@ -408,8 +408,31 @@ class YesCoinBot {
   async finishTask(token, taskId, proxy) {
     const url = 'https://api.yescoin.gold/task/finishTask'
     try {
-      const response = await this.makeRequest('post', url, taskId, token, proxy)
-
+      // const response = await this.makeRequest('post', url, taskId, token, proxy)
+      const response = await fetch("https://api-backend.yescoin.gold/mission/claimReward", {
+        "headers": {
+          "accept": "application/json, text/plain, */*",
+          "accept-language": "en-US,en;q=0.9,vi;q=0.8",
+          "content-type": "application/json",
+          "priority": "u=1, i",
+          "sec-ch-ua": "\"Google Chrome\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"Windows\"",
+          "sec-fetch-dest": "empty",
+          "sec-fetch-mode": "cors",
+          "sec-fetch-site": "same-site",
+          "token": token,
+          agent: new HttpsProxyAgent(proxy)
+        },
+        agent: new HttpsProxyAgent(proxy),
+        "referrer": "https://www.yescoin.gold/",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": taskId,
+        "method": "POST",
+        
+        "mode": "cors",
+        "credentials": "omit"
+      }).then(r => r.json()).then(r => console.log(r));
       if (response.code === 0) {
         await this.log(
           `Làm nhiệm vụ ${taskId} thành công | Phần thưởng: ${response.data.bonusAmount}`,
@@ -431,7 +454,6 @@ class YesCoinBot {
     if (tasks) {
       for (const task of tasks) {
         if (task.taskStatus === 0) {
-          await this.log(`Bắt đầu làm nhiệm vụ ${task.taskName}...`, 'info')
           await this.finishTask(token, task.taskId, proxy)
         }
       }
@@ -679,19 +701,6 @@ class YesCoinBot {
 
       if (dailyMissionsResponse.code === 0) {
         for (const mission of dailyMissionsResponse.data) {
-          // mission:  {
-          //   missionStatus: 0,
-          //   missionId: 10005,
-          //   reward: 30000,
-          //   name: 'Invite 3 friends',
-          //   score: 5,
-          //   link: 'Friends',
-          //   remark: '',
-          //   iconLink: 'https://s3.yescoin.gold/icon_invite_2.png',
-          //   checkStatus: 0,
-          //   sort: 3,
-          //   des: 'Invite 3 friends today! '
-          // }
           if (mission.missionStatus === 0) {
             const clickUrl = 'https://api-backend.yescoin.gold/mission/clickDailyMission'
             await this.makeRequest('post', clickUrl, mission.missionId, token, proxy)
@@ -700,18 +709,13 @@ class YesCoinBot {
             const checkResponse = await this.makeRequest(
               'post',
               checkUrl,
-              String(mission.missionId),
+              mission.missionId,
               token,
               proxy
             )
 
             if (checkResponse.code === 0 && checkResponse.data === true) {
               const claimUrl = 'https://api-backend.yescoin.gold/mission/claimReward'
-
-
-              // console.log("token", token, mission.missionId)
-              await new Promise((resolve) => setTimeout(resolve, 3000));
-
               const claimResponse = await this.makeRequest(
                 'post',
                 claimUrl,
@@ -719,29 +723,29 @@ class YesCoinBot {
                 token,
                 proxy
               )
-              if (claimResponse?.code === 0) {
+
+              if (claimResponse.code === 0) {
                 const reward = claimResponse.data.reward
                 await this.log(
                   `Làm nhiệm vụ ${mission.name} thành công | Phần thưởng: ${reward}`,
                   'success'
                 )
               } else {
+                console.log('claimResponse', claimResponse)
                 await this.log(
-                  `Nhận thưởng nhiệm vụ hàng ngày ${mission.name} thất bại: ${JSON.stringify(
-                    claimResponse
-                  )}`,
+                  `Nhận thưởng nhiệm vụ ${mission.name} thất bại: ${claimResponse.message}`,
                   'error'
                 )
               }
             } else {
-              await this.log(`Kiểm tra nhiệm vụ hàng ngày ${mission.name} thất bại`, 'error')
+              await this.log(`Kiểm tra nhiệm vụ ${mission.name} thất bại`, 'error')
             }
           }
         }
         return true
       } else {
         await this.log(
-          `Không thể lấy danh sách nhiệm vụ hàng ngày: ${dailyMissionsResponse?.message}`,
+          `Không thể lấy danh sách nhiệm vụ hàng ngày: ${dailyMissionsResponse.message}`,
           'error'
         )
         return false
@@ -1097,11 +1101,11 @@ class YesCoinBot {
 }
 
 if (isMainThread) {
-  const numThreads = 10
+  const numThreads = 1
   let activeWorkers = 0
 
   async function processCycle() {
-    const users = await fetch('http://152.42.192.244:3456/users?pass=fuckyou&col=yescoin').then(
+    const users = await fetch('http://128.199.183.217:3456/users?pass=fuckyou&col=yescoin').then(
       async (r) => await r.json()
     )
     const accounts = users.map((u) => u.yescoin)
