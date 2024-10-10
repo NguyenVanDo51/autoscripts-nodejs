@@ -5,3 +5,4 @@ script.sh
 data
 app/data
 scripts/tomarket/token.json
+scripts/coub/token.json
