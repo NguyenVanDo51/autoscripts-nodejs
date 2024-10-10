@@ -6,7 +6,30 @@ const readline = require('readline')
 const { DateTime, Duration } = require('luxon')
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads')
 const { HttpsProxyAgent } = require('https-proxy-agent')
+const getProxy = () => {
+  const path = require('path')
+  const fs = require('fs')
+  function convertProxyFormat(proxy) {
+    try {
+      // Tách chuỗi proxy thành các phần
+      const [ip, port, user, pass] = proxy.split(':')
 
+      // Tạo chuỗi mới theo định dạng http://user:pass@ip:port
+      const formattedProxy = `http://${user}:${pass}@${ip}:${port}`
+
+      return formattedProxy
+    } catch (e) {
+      return proxy
+    }
+  }
+  const proxyData = fs
+    .readFileSync(path.join(__dirname, '..', '', 'proxy.txt'), 'utf-8')
+    .split('\n')
+    .map((line) => convertProxyFormat(line.trim()))
+    .filter((line) => line !== '')
+  
+  return proxyData
+}
 class GameBot {
   constructor(queryId, accountIndex, proxy, username) {
     this.queryId = queryId
@@ -673,6 +696,7 @@ async function main() {
     const errors = []
     const users = await axios.get('http://128.199.183.217:3456/users?col=blum&pass=fuckyou').then(res => res.data)
     console.log(`Tìm thấy ${users.length} tài khoản. Bắt đầu với ${maxThreads} tài khoản đồng thời.`)
+    const proxies = getProxy()
     while (currentIndex < users.length) {
       const workerPromises = []
       const batchSize = Math.min(maxThreads, users.length - currentIndex)
@@ -681,7 +705,7 @@ async function main() {
           workerData: {
             queryId: users[currentIndex].blum,
             accountIndex: currentIndex,
-            proxy: users[currentIndex].httpProxy,
+            proxy: proxies[i % proxies.length],
             username: users[currentIndex].username
           },
         })
