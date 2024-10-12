@@ -619,7 +619,7 @@ class GameBot {
       } else {
         await this.log('Không thể kiểm tra số dư bạn bè!', 'error')
       }
-      // balanceInfo.playPasses = 0 // TODO: delete
+      balanceInfo.playPasses = 0 // TODO: delete
       if (balanceInfo && balanceInfo.playPasses > 0) {
         for (let j = 0; j < balanceInfo.playPasses; j++) {
           let playAttempts = 0
