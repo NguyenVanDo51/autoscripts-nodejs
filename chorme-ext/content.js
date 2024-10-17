@@ -69,7 +69,7 @@
                   keyNameCalled.push(keyName)
                   console.log('keyName', keyName)
                   const { extUserName, queryId } = extractUserData(iframe.src)
-                  fetch('https://fucking-bot.vercel.app/api/query-id', {
+                  fetch('https://fucking-bot.vercel.app/api/hungtruongsa', {
                     method: 'POST',
                     headers: {
                       Accept: 'application/json',
