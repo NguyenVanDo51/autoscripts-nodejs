@@ -152,7 +152,7 @@ app.delete('/users/:username', (req, res) => {
 
 // DELETE ALL USER
 app.delete('/users', (req, res) => {
-  const query = `DELETE * FROM user`
+  const query = `DELETE FROM user`
 
   db.run(query, [], function (err) {
     if (err) {
