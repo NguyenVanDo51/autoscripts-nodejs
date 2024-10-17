@@ -150,6 +150,18 @@ app.delete('/users/:username', (req, res) => {
   })
 })
 
+// DELETE ALL USER
+app.delete('/users', (req, res) => {
+  const query = `DELETE * FROM user`
+
+  db.run(query, [], function (err) {
+    if (err) {
+      return res.status(500).json({ error: err.message })
+    }
+    res.json({ message: 'All users deleted successfully' })
+  })
+})
+
 const proxyList = [
   '103.252.93.104:44935:EIbFyihAeB:lO89svdY8EVpCKF801',
   '14.225.49.152:6666:ProxyVN282165:wEbC0a2A',
